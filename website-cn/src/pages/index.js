@@ -11,58 +11,52 @@ const features = [
   {
     content: (
       <p>
-        React Redux is maintained by the Redux team, and{' '}
-        <strong>
-          kept up-to-date with the latest APIs from Redux and React
-        </strong>
-        .
+        React Redux由Redux团队维护并{' '}
+        <strong>保持与Redux和React的最新API同步</strong>。
       </p>
     ),
     image: <img src="img/noun_Certificate_1945625.svg" />,
     imageAlign: 'top',
-    title: 'Official'
+    title: '官方',
   },
   {
     content: (
       <p>
-        <strong>Designed to work with React's component model</strong>. You
-        define how to extract the values your component needs from Redux, and
-        your component updates automatically as needed.
+        <strong>旨在与React的组件模型一起工作。</strong>{' '}
+        由你定义如何从Redux中提取你的组件需要的值，你的组件会根据需要自动更新。
       </p>
     ),
     image: <img src="img/noun_Check_1870817.svg" />,
     imageAlign: 'top',
-    title: 'Predictable'
+    title: '可预见',
   },
   {
     content: (
       <p>
-        Provides APIs that{' '}
-        <strong>enable your components to interact with the Redux store</strong>
-        , so you don't have to write that logic yourself.
+        提供 <strong>允许你的组件和 Redux 的 store 进行交互的</strong> API ,
+        所以你不需要自己写逻辑.
       </p>
     ),
     image: <img src="img/noun_Box_1664404.svg" />,
     imageAlign: 'top',
-    title: 'Encapsulated'
+    title: '封装',
   },
   {
     content: (
       <p>
-        Automatically implements{' '}
-        <strong>complex performance optimizations</strong>, so that your own
-        component only re-renders when the data it needs has actually changed.
+        自动实现 <strong>复杂的性能优化</strong>
+        ，所以你的组件只有在其所依赖的数据实际发生变化时才会重现渲染。
       </p>
     ),
     image: <img src="img/noun_Rocket_1245262.svg" />,
     imageAlign: 'top',
-    title: 'Optimized'
-  }
+    title: '优化',
+  },
 ]
 
 const otherLibraries = [
   {
-    content: 'A predictable state container for JavaScript applications',
+    content: '一个可预测的JavaScript应用程序的状态容器',
     title: 'Redux',
     link: 'https://redux.js.org',
     image: (
@@ -75,11 +69,10 @@ const otherLibraries = [
       >
         <path d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"></path>
       </svg>
-    )
+    ),
   },
   {
-    content:
-      'The official, opinionated, batteries-included toolset for efficient Redux development',
+    content: '官方的、可选的、功能齐备的工具集，用于高效的 Redux 开发',
     title: 'Redux Toolkit',
     link: 'https://redux-toolkit.js.org',
     image: (
@@ -92,8 +85,8 @@ const otherLibraries = [
       >
         <path d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"></path>
       </svg>
-    )
-  }
+    ),
+  },
 ]
 
 function Home() {
@@ -163,7 +156,7 @@ function Home() {
               <div className="row">
                 <div className="col">
                   <h2 className={`text--center ${styles.secondTitle}`}>
-                    Other Libraries from the Redux Team
+                    Redux 团队的其他库
                   </h2>
                 </div>
               </div>

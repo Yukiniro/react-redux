@@ -14,7 +14,7 @@ const siteConfig = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          path: '../docs',
+          path: '../docs-cn',
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           showLastUpdateTime: true,
@@ -36,7 +36,7 @@ const siteConfig = {
   ],
   title: 'React Redux', // Title for your website.
   onBrokenLinks: 'throw',
-  tagline: 'Official React bindings for Redux',
+  tagline: 'Redux 的官方 React 绑定',
   url: 'https://react-redux.js.org', // Your website URL
   baseUrl: '/',
   // Used for publishing and more
@@ -77,17 +77,17 @@ const siteConfig = {
       items: [
         {
           to: 'introduction/getting-started',
-          label: 'Getting Started',
+          label: '开始',
           position: 'right',
         },
         {
           to: 'tutorials/quick-start',
-          label: 'Tutorial',
+          label: '教程',
           position: 'right',
         },
         {
           to: 'using-react-redux/connect-mapstate',
-          label: 'Using React Redux',
+          label: '使用 React Redux',
           position: 'right',
         },
         { to: 'api/hooks', label: 'API', position: 'right' },
@@ -99,7 +99,7 @@ const siteConfig = {
         },
         {
           href: '/introduction/getting-started#help-and-discussion',
-          label: 'Need help?',
+          label: '需要帮助?',
           position: 'right',
         },
       ],
@@ -117,19 +117,19 @@ const siteConfig = {
           title: 'Docs',
           items: [
             {
-              label: 'Introduction',
+              label: '介绍',
               to: 'introduction/getting-started',
             },
             {
-              label: 'Using React Redux',
+              label: '使用 React Redux',
               to: 'using-react-redux/connect-mapstate',
             },
             {
-              label: 'API Reference',
+              label: 'API 参考',
               to: 'api/hooks',
             },
             {
-              label: 'Guides',
+              label: '指南',
               to: 'troubleshooting',
             },
           ],
