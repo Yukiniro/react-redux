@@ -10,6 +10,7 @@ react-redux-*/
 .cache/
 .yarn/cache/
 website/.yarn/
+website-cn/.yarn/
 .yarnrc
 .yarn/*
 !.yarn/patches
@@ -31,3 +32,8 @@ website/translated_docs
 website/build/
 website/node_modules
 website/i18n/*
+
+website-cn/translated_docs
+website-cn/build/
+website-cn/node_modules
+website-cn/i18n/*
