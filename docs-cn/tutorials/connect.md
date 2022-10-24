@@ -1,28 +1,30 @@
 ---
 id: connect
-title: 'Tutorial: Connect API'
+title: '教程: Connect API'
 hide_title: true
-sidebar_label: 'Tutorial: Connect API'
-description: 'Tutorials > Connect API: how to use the legacy connect API'
+sidebar_label: '教程: Connect API'
+description: '教程 > Connect API: 如何使用传统的 connect API'
 ---
 
 &nbsp;
 
-# Tutorial: Using the `connect` API
+# 教程: 使用 `connect` API
 
 :::tip
 
 We now recommend using [the React-Redux hooks API as the default](../api/hooks.md). However, the `connect` API still works fine.
 
-This tutorial also shows some older practices we no longer recommend, like separating Redux logic into folders by type. We've kept this tutorial as-is for completeness, but recommend reading through [the "Redux Essentials" tutorial](https://redux.js.org/tutorials/essentials/part-1-overview-concepts) and the [Redux Style Guide](https://redux.js.org/style-guide/style-guide) in the Redux docs for our current best practices.
+我们推荐使用 [React-Redux hooks API 作为默认](../api/hooks.md)。然而， `connect` API 仍然可以正常工作
 
-We're working on a new tutorial that will introduce the hooks APIs. Until then, we suggest reading [**Redux Fundamentals, Part 5: UI and React**](https://redux.js.org/tutorials/fundamentals/part-5-ui-react) for a hooks tutorial.
+本教程还展示了一些我们不再推荐的旧做法，如按类型将 Redux 逻辑分离到文件夹。为了完整起见，我们保留了本教程，但建议阅读 Redux 文档中的 [the "Redux Essentials" tutorial](https://redux.js.org/tutorials/essentials/part-1-overview-concepts) 和 [Redux Style Guide](https://redux.js.org/style-guide/style-guide)，了解我们当前的最佳实践。
+
+我们正在编写一个新的教程，将介绍 hooks 的 API。在那之前，我们建议阅读[**Redux Fundamentals, Part 5: UI and React**](https://redux.js.org/tutorials/fundamentals/part-5-ui-react)作为 hooks 教程。
 
 :::
 
-To see how to use React Redux in practice, we’ll show a step-by-step example by creating a todo list app.
+为了了解如何在实践中使用 React Redux，我们将通过创建一个 todo list 应用来展示一个逐步的例子。
 
-## A Todo List Example
+## Todo List 示例
 
 **Jump to**
 
@@ -30,60 +32,64 @@ To see how to use React Redux in practice, we’ll show a step-by-step example b
 - 👆 [Providing the store](#providing-the-store)
 - ✌️ [Connecting the Component](#connecting-the-components)
 
-**The React UI Components**
+**React UI 组件**
 
-We have implemented our React UI components as follows:
+我们已经实现了我们的 React UI 组件，如下所示：
 
-- `TodoApp` is the entry component for our app. It renders the header, the `AddTodo`, `TodoList`, and `VisibilityFilters` components.
-- `AddTodo` is the component that allows a user to input a todo item and add to the list upon clicking its “Add Todo” button:
-  - It uses a controlled input that sets state upon `onChange`.
-  - When the user clicks on the “Add Todo” button, it dispatches the action (that we will provide using React Redux) to add the todo to the store.
-- `TodoList` is the component that renders the list of todos:
-  - It renders the filtered list of todos when one of the `VisibilityFilters` is selected.
-- `Todo` is the component that renders a single todo item:
-  - It renders the todo content, and shows that a todo is completed by crossing it out.
-  - It dispatches the action to toggle the todo's complete status upon `onClick`.
-- `VisibilityFilters` renders a simple set of filters: _all_, _completed_, and _incomplete._ Clicking on each one of them filters the todos:
+- `TodoApp` 是我们 APP 的入口组件。它会渲染头部、 `AddTodo`、 `TodoList` and `VisibilityFilters` 组件.
+- `AddTodo` 是一个组件，它允许用户输入一个待办事项，并在点击其 “Add Todo” 按钮后添加到列表中：
+
+  - 它使用一个的受控的输入框，并通过 `onChange` 设置状态。
+  - 当用户点击 "Add Todo"按钮时，它将派发 action（我们将使用 React Redux 提供），将待办事项添加到 store。
+
+- `TodoList` 是渲染 todos 列表的组件。:
+  - 它在 `VisibilityFilters` 的某一个选项被选中时渲染过滤后的待办列表。
+- `Todo` 是渲染单个待办事项的组件:
+  - 它渲染了 todo 的内容，并通过划掉它来显示一个 todo 已经完成。
+  - 它在 "onClick "时派发 action，以切换 todo 的完整状态。
+- `VisibilityFilters` 渲染一组简单的过滤器: _all_, _completed_, and _incomplete._ 点击上面的任何一个都会过滤掉一些待办事项:
   - It accepts an `activeFilter` prop from the parent that indicates which filter is currently selected by the user. An active filter is rendered with an underscore.
-  - It dispatches the `setFilter` action to update the selected filter.
-- `constants` holds the constants data for our app.
-- And finally `index` renders our app to the DOM.
+  - 它接受来自父级的 `activeFilter` 属性，表示用户当前选择了哪个过滤器。一个激活的过滤器会用下划线表示。
+  - 它发送 `setFilter` 的 action 来更新所选的过滤器。
+- `constants` 存放我们应用程序的常量数据。
+- 最后 `index` 将我们的应用程序渲染到 DOM。
 
 <br />
 
-**The Redux Store**
+**Redux 的 store**
 
-The Redux portion of the application has been set up using the [patterns recommended in the Redux docs](https://redux.js.org):
+应用程序的 Redux 部分已经使用[Redux 文档中推荐的模式](https://redux.js.org)进行了设置。
 
 - Store
-  - `todos`: A normalized reducer of todos. It contains a `byIds` map of all todos and a `allIds` that contains the list of all ids.
-  - `visibilityFilters`: A simple string `all`, `completed`, or `incomplete`.
+  - `todos`: 一个标准的 todos 的 reducer。它包含一个所有 todos 的 `byIds` 映射和一个包含所有 id 列表的 `allIds`。
+  - `visibilityFilters`: 值为 `all`，`completed` 或者 `incomplete` 的简单的字符串。
 - Action Creators
-  - `addTodo` creates the action to add todos. It takes a single string variable `content` and returns an `ADD_TODO` action with `payload` containing a self-incremented `id` and `content`
-  - `toggleTodo` creates the action to toggle todos. It takes a single number variable `id` and returns a `TOGGLE_TODO` action with `payload` containing `id` only
-  - `setFilter` creates the action to set the app’s active filter. It takes a single string variable `filter` and returns a `SET_FILTER` action with `payload` containing the `filter` itself
+  - `allTodo` 创建了一个用于添加待办事项的 action。它接收一个字符串变量 `content`，并返回一个 `ADD_TODO` action，`payload` 包含一个自我增加的 `id` 和 `content`。
+  - `toggleTodo` 创建了一个用于切换待办事项是否完成的 action。它接受一个单一的数字变量`id` 并返回一个 `TOGGLE_TODO` action，`payload` 只包含 `id`。
+  - `setFilter`创建了一个用于设置应用程序过滤器的激活状态的 action。它接收一个字符串变量 `filter` 并返回一个 `SET_FILTER` action，`payload` 包含 `filter` 本身。
 - Reducers
   - The `todos` reducer
-    - Appends the `id` to its `allIds` field and sets the todo within its `byIds` field upon receiving the `ADD_TODO` action
-    - Toggles the `completed` field for the todo upon receiving the `TOGGLE_TODO` action
+    - 在收到 `ADD_TODO` 动作后，将 `id` 添加到其 `allIds` 字段，并在其 `byIds` 字段中设置 todo。
+    - 在收到 `TOGGLE_TODO` 动作时，切换该任务的 `completed` 字段。
   - The `visibilityFilters` reducer sets its slice of store to the new filter it receives from the `SET_FILTER` action payload
+  - `visibilityFilters` reducer 将它的 store 片设置为它从 `SET_FILTER` action 中收到的新过滤器。
 - Action Types
-  - We use a file `actionTypes.js` to hold the constants of action types to be reused
+  - 我们使用一个文件 `actionTypes.js` 来保存要重复使用的动作类型的常量。
 - Selectors
-  - `getTodoList` returns the `allIds` list from the `todos` store
-  - `getTodoById` finds the todo in the store given by `id`
-  - `getTodos` is slightly more complex. It takes all the `id`s from `allIds`, finds each todo in `byIds`, and returns the final array of todos
-  - `getTodosByVisibilityFilter` filters the todos according to the visibility filter
+  - `getTodoList` 从 `todos` 的 store 中返回 `allIds` 的列表
+  - `getTodoById` 通过 `id` 返回 store 中的待办事项
+  - `getTodos` 稍微复杂一些。它从 `allIds` 中获取所有的 `id`，在 `byIds` 中找到每个待办事项，并返回最后的代办事项的数组。
+  - `getTodosByVisibilityFilter` 通过激活的 filter 过滤待办事项
 
-You may check out [this CodeSandbox](https://codesandbox.io/s/6vwyqrpqk3) for the source code of the UI components and the unconnected Redux store described above.
+你可以查看[这个 CodeSandbox](https://codesandbox.io/s/6vwyqrpqk3)，了解上述 UI 组件和未连接的 Redux store 的源代码。
 
 <br />
 
-We will now show how to connect this store to our app using React Redux.
+现在我们将展示如何使用 React Redux 将这个 store 连接到我们的应用程序。
 
 ### Providing the Store
 
-First we need to make the `store` available to our app. To do this, we wrap our app with the `<Provider />` API provided by React Redux.
+首先，我们需要使 `store` 对我们的应用程序可用。为了做到这一点，我们用 React Redux 提供的 `<Provider />` API 来包装我们的应用程序。
 
 ```jsx
 // index.js
@@ -103,23 +109,22 @@ root.render(
 )
 ```
 
-Notice how our `<TodoApp />` is now wrapped with the `<Provider />` with `store` passed in as a prop.
+注意我们的`<TodoApp />`现在被`<Provider />`包裹，`store`作为一个道具被传入。
 
 ![](https://i.imgur.com/LV0XvwA.png)
 
-### Connecting the Components
+### 连接组件
 
-React Redux provides a `connect` function for you to read values from the Redux store (and re-read the values when the store updates).
+React Redux 为你提供了一个 `connect` 方法从 Redux store 中读取值（在 store 更新后重新读取）。
 
-The `connect` function takes two arguments, both optional:
+`connect` 方法接受两个参数，都是可选的：
 
-- `mapStateToProps`: called every time the store state changes. It receives the entire store state, and should return an object of data this component needs.
+- `mapStateToProps`: 每次 store 状态改变时都会被调用。它接收整个 store 的状态，并应返回该组件需要的数据对象。
+- `mapDispatchToProps`: 这个参数可以是一个函数，也可以是一个对象。
+  - 如果它是一个函数，它将在组件创建时被调用一次。它将接收`dispatch'作为参数，并应返回一个使用`dispatch'来分配 action 的函数的对象。
+  - 如果它是一个由 action creators 组成的对象，每个 action creator 将被变成一个 prop 函数，在被调用时自动发送其 action。**注意**。我们推荐使用这种 "对象速记" 形式。
 
-- `mapDispatchToProps`: this parameter can either be a function, or an object.
-  - If it’s a function, it will be called once on component creation. It will receive `dispatch` as an argument, and should return an object full of functions that use `dispatch` to dispatch actions.
-  - If it’s an object full of action creators, each action creator will be turned into a prop function that automatically dispatches its action when called. **Note**: We recommend using this “object shorthand” form.
-
-Normally, you’ll call `connect` in this way:
+通常情况下，你会以这种方式调用 `connect`:
 
 ```js
 const mapStateToProps = (state, ownProps) => ({
@@ -139,9 +144,9 @@ const ConnectedComponent = connectToStore(Component)
 connect(mapStateToProps, mapDispatchToProps)(Component)
 ```
 
-Let’s work on `<AddTodo />` first. It needs to trigger changes to the `store` to add new todos. Therefore, it needs to be able to `dispatch` actions to the store. Here’s how we do it.
+让我们先研究一下 `<AddTodo />`。它需要触发对 `store` 的改变，以添加新的 todos。因此，它需要能够 `dispatch` action 到 store。下面是我们如何做的。
 
-Our `addTodo` action creator looks like this:
+我们的 `addTodo` action creator 看起来像这样。
 
 ```js
 // redux/actions.js
@@ -159,7 +164,7 @@ export const addTodo = (content) => ({
 // ... other actions
 ```
 
-By passing it to `connect`, our component receives it as a prop, and it will automatically dispatch the action when it’s called.
+通过把它传递给 `connect`，我们的组件就会把它作为一个道具来接收，当它被调用时，它就会自动分配动作。
 
 ```js
 // components/AddTodo.js
@@ -175,11 +180,11 @@ class AddTodo extends React.Component {
 export default connect(null, { addTodo })(AddTodo)
 ```
 
-Notice now that `<AddTodo />` is wrapped with a parent component called `<Connect(AddTodo) />`. Meanwhile, `<AddTodo />` now gains one prop: the `addTodo` action.
+现在注意到，`<AddTodo />` 被包裹在一个叫做 `<Connect(AddTodo) />` 的父组件中。同时，`<AddTodo />` 现在获得了一个道具：`addTodo` action。
 
 ![](https://i.imgur.com/u6aXbwl.png)
 
-We also need to implement the `handleAddTodo` function to let it dispatch the `addTodo` action and reset the input
+我们还需要实现 `handleAddTodo` 函数，让它调度 `addTodo` action 并重置输入。
 
 ```jsx
 // components/AddTodo.js
@@ -217,17 +222,17 @@ class AddTodo extends React.Component {
 export default connect(null, { addTodo })(AddTodo)
 ```
 
-Now our `<AddTodo />` is connected to the store. When we add a todo it would dispatch an action to change the store. We are not seeing it in the app because the other components are not connected yet. If you have the Redux DevTools Extension hooked up, you should see the action being dispatched:
+现在我们的 `<AddTodo />` 已经连接到 store。当我们添加一个待办事项时，它将派发一个 action 来改变 store。我们在应用中没有看到它，因为其他组件还没有连接。如果你已经连接 了 Redux DevTools 扩展，你应该看到 action 被分派：
 
 ![](https://i.imgur.com/kHvkqhI.png)
 
-You should also see that the store has changed accordingly:
+你还应该看到，store 也有相应的变化：
 
 ![](https://i.imgur.com/yx27RVC.png)
 
-The `<TodoList />` component is responsible for rendering the list of todos. Therefore, it needs to read data from the store. We enable it by calling `connect` with the `mapStateToProps` parameter, a function describing which part of the data we need from the store.
+`<TodoList />` 组件负责渲染 todos 的列表。因此，它需要从 store 中读取数据。我们通过调用 `connect` 和`mapStateToProps` 参数来启用它，该参数是一个描述我们需要从 store 获得哪一部分数据的函数。
 
-Our `<Todo />` component takes the todo item as props. We have this information from the `byIds` field of the `todos`. However, we also need the information from the `allIds` field of the store indicating which todos and in what order they should be rendered. Our `mapStateToProps` function may look like this:
+我们的 `<Todo />` 组件把 todo 项作为 props。我们从 `todos` 的 `byIds` 字段中获得这一信息。然而，我们还需要来自 store 的 `allIds` 字段的信息，表明哪些 todos 和它们应该被呈现的顺序。我们的 `mapStateToProps` 函数可能看起来像这样：
 
 ```js
 // components/TodoList.js
@@ -249,7 +254,7 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(TodoList);
 ```
 
-Luckily we have a selector that does exactly this. We may simply import the selector and use it here.
+幸运的是，我们有一个选择器，正是这样做的。我们可以简单地导入选择器并在这里使用它。
 
 ```js
 // redux/selectors.js
