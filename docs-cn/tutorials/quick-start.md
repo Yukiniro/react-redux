@@ -29,15 +29,9 @@ hide_title: true
 
 ### 如何阅读这个教程
 
-This page will focus on just how to set up a Redux application with Redux Toolkit and the main APIs you'll use. For explanations of what Redux is, how it works, and full examples of how to use Redux Toolkit, see [the Redux core docs tutorials](https://redux.js.org/tutorials/index).
-
 本页将重点介绍如何用 Redux Toolkit 建立一个 Redux 应用程序以及你将使用的主要 API。关于什么是 Redux，它是如何工作的解释，以及如何使用 Redux 工具包的完整例子，请参见[the Redux core docs tutorials](https://redux.js.org/tutorials/index)。
 
-For this tutorial, we assume that you're using Redux Toolkit and React Redux together, as that is the standard Redux usage pattern. The examples are based on [a typical Create-React-App folder structure](https://create-react-app.dev/docs/folder-structure) where all the application code is in a `src`, but the patterns can be adapted to whatever project or folder setup you're using.
-
 在本教程中，我们假设你正在使用 Redux Toolkit 和 React Redux，因为那是标准的 Redux 使用模式。这些例子是基于[a typical Create-React-App folder structure](https://create-react-app.dev/docs/folder-structure)，其中所有的应用程序代码都在 `src` 中，但这些模式可以适应你使用的任何项目或文件夹设置。
-
-The [Redux+JS template for Create-React-App](https://github.com/reduxjs/cra-template-redux) comes with this same project setup already configured.
 
 [Redux+JS 的 Create-React-App 模板](https://github.com/reduxjs/cra-template-redux)已经配置了这个相同的项目设置。
 
